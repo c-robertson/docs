@@ -1,15 +1,10 @@
 # Information about compatible CGMs
-
-* Dexcom G4 Platinum System (with or without Share)
-* Dexcom G5 Mobile
-* Medtronic (MiniMed Paradigm REAL-Time Revel or Enlite)
-
-
 OpenAPS currently primarily supports three different CGM systems: 
-
 * the Dexcom G4 Platinum system (with or without the [Share](http://www.dexcom.com/dexcom-g4-platinum-share) functionality), 
-* the newer Dexcom G5 Mobile system and the [Medtronic system](https://www.medtronicdiabetes.com/treatment-and-products/enlite-sensor), and, 
-* other CGM or CGM-like devices (Libre) if the data is uploaded to Nightscout and the OpenAPS rig has Internet connectivity.
+* the Dexcom G5 system
+* the Dexcom G6 system (online connectivity only, for now)
+* the [Medtronic system](https://www.medtronicdiabetes.com/treatment-and-products/enlite-sensor) (MiniMed Paradigm REAL-Time Revel or Enlite),  
+* and other CGM or CGM-like devices (Abbott's FreeStyle Libre) if the data is uploaded to Nightscout and the OpenAPS rig has Internet connectivity.
 
 With Dexcom G4, the Share platform is not required; but is valuable for uploading BG data to the cloud (and into Nightscout, which can then send BGs to the rig). However, without Share, a G4 receiver can instead be plugged in directly to the OpenAPS rig. For Dexcom G5 Mobile you can also use a compatible receiver (software upgraded G4 with Share receiver or a G5 Mobile Receiver), or also pull data from the Dexcom Share servers into Nightscout for use with an Internet-connected OpenAPS rig.
 
@@ -28,7 +23,6 @@ Your OpenAPS implementation can also pull CGM data from a Nightscout site in add
 * You could also build a DIY receiver. Directions to build the receiver, set up your uploader and Nightscout can be found [here](http://www.nightscout.info/wiki/nightscout-with-xdrip-wireless-bridge).
 * You can also use part of the DIY receiver set up - the wixel – directly to the Raspberry Pi. Learn more about the wixel setup [here](https://github.com/jamorham/python-usb-wixel-xdrip) and [here](https://github.com/ochenmiller/wixelpi_uploader).
 * If you are using Abbott Freestyle Libre in combination with Sony SmartWatch 3 and xdrip+ (or possibly other combinations of technology to get Libre data up into the cloud), you can also pull CGM data directly from Nightscout.
-
 
 ### Using the Medtronic CGM
 

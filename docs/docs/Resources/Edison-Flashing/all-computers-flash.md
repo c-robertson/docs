@@ -28,7 +28,7 @@ To flash the Edison using a Raspberry Pi, you’ll need a large (preferably 16GB
 
 Note: Intel has announced the Edison will be discontinued at the end of 2017.  As part of this, apparently, the old link to Edison drivers has been removed.  We are unsure if this is a temporary issue or long term.  Therefore, if the link above for Intel Edison Drivers is not working, you can use [this link](https://www.dropbox.com/s/d5ooojru5jxsilp/IntelEdisonDriverSetup1.2.1.exe?dl=0) to download them directly from an OpenAPS user's dropbox.  Obviously screenshots below will be different if Intel has not fixed or repaired their driver downloads page for Edisons.
 
-********
+******
 
 - Install [PuTTY]( http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html). Download the installation file that matches your PC's architecture (32-bit or 64-bit).
 
@@ -48,7 +48,7 @@ Windows PCs with less than 6 GB of RAM  may need to have the size of the page fi
 
   -  Read, but only follow steps 3-5 of, [these instructions](https://software.intel.com/en-us/node/637974#manual-flash-process) first.  When you get to step 6, you'll need to cd into the jubilinux directory (see how to create it in the Jubilinux section below if you don't already have it) instead of the Intel image one, and continue with the directions below.
   -  Check also to see if you have lsusb installed prior to proceeding.  If not, follow the instructions here to add: https://github.com/jlhonora/homebrew-lsusb
-
+  - Read the [Mac instructions for flashing](mac-flash.md) too, but note that they are now a little older than this.
 
 
 ## Downloading image
@@ -56,7 +56,7 @@ Windows PCs with less than 6 GB of RAM  may need to have the size of the page fi
 ### Jubilinux
 [Jubilinux](http://www.jubilinux.org/) "is an update to the stock ubilinux edison distribution to make it more useful as a server, most significantly by upgrading from wheezy to jessie."  That means we can skip many of the time-consuming upgrade steps that are required when starting from ubilinux.
 
-  - Download Jubilinux [jubilinux.zip](http://www.jubilinux.org/dist/)
+  - Download [Jubilinux](http://www.jubilinux.org/dist/) - the jubilinux-v0.3.0.zip is known to work; jubilinux 0.2.0 runs Debian jessie, which is NOT supported by Debian any longer
   - In download folder, right-click on file and extract (or use `unzip jubilinux.zip` from the command line) You will access this directory from a command prompt in the next step. It is a good idea to create the Jubilinux in your root directory to make this easier to access.
   - Open a terminal window and navigate to the extracted folder: `cd jubilinux`. If using Windows OS use the command prompt (cmd). This is your "flash window", keep it open for later.
   
@@ -86,7 +86,8 @@ Windows PCs with less than 6 GB of RAM  may need to have the size of the page fi
   
 ### All platforms:
   - Once the screen comes up, press enter a few times to wake things up. This will give you a "console" view of what is happening on your Edison. 
-  - Now you will see a login prompt for the edison on the console screen. Login using the username "root" (all lowercase) and no password. This will have us ready to reboot from the command line when we are ready.
+  - Now you will see a login prompt for the edison on the console screen. Login using the username "root" (all lowercase) and no password. This will have us ready to reboot from the command line when we are ready.  
+   - - Note!  If you do not have your edison password at this point don't panic.  We are only logging in to reboot the edison and that can be accomplished via the black button on the explorer board as well.  Without the root password you may continue.
   - Don't resize your console window: it will likely mess up your terminal's line wrapping.  (Once you get wifi working and connect with SSH you can resize safely.)
 
 ## Flashing image onto the Edison
@@ -95,19 +96,25 @@ Windows PCs with less than 6 GB of RAM  may need to have the size of the page fi
   - In the "flash window" from the Download Image instructions above, run `sudo ./flashall.sh`.  If you receive an `dfu-util: command not found` error, you can install dfu-util by running `sudo apt-get install dfu-util`
 
 ### If you’re using a Mac - starting flash:
-  - In the "flash window" from the Download Image instructions above, run `./flashall.sh`.  If you receive an `dfu-util: command not found` error, you can install dfu-util by following [the Mac instructions here](https://software.intel.com/en-us/node/637974#manual-flash-process). 
+  - In the "flash window" from the Download Image instructions above, run `./flashall.sh`.  
+    - If you receive an `dfu-util: command not found` error, you can install dfu-util by following [the Mac instructions here](https://software.intel.com/en-us/node/637974#manual-flash-process). 
+    - If you receive an `Error: Running Homebrew as root is extremely dangerous and no longer supported. As Homebrew does not drop privileges on installation you would be giving all build scripts full access to your system.` see the troubleshooting section below.
 
 ### If you're using a Windows PC - starting flash:
   - In the "flash window" from the Download Image instructions above, run `flashall.bat`
 
 ### All platforms:
-  - The flashall script will ask you to reboot the Edison. Go back to your console window and type `reboot`. Switch back to the other window and you will see the flash process begin. You can monitor both the flash and console windows throughout the rest of the flash process. If nothing else works and you are feeling brave, you can try pulling the Edison out and reconnecting it to the board to start the flash process. 
+  - The flashall script will ask you to reboot the Edison. 
+  - - If you have your edison root password: Go back to your console window and type `reboot`. 
+  - - If you do not have your edison root password: Press the black button on the explorer board until the LED between the usb connectors shuts off.  Then press it again until the light comes back on. 
+  - Switch back to the other window and you will see the flash process begin. You can monitor both the flash and console windows throughout the rest of the flash process. If nothing else works and you are feeling brave, you can try pulling the Edison out and reconnecting it to the board to start the flash process. 
   - It will take about 10 minutes to flash from Mac or Windows.  If the step that flashall says should take up to 10 minutes completes in seconds, then the flash did not complete successfully, perhaps because you didn't set up the virtual memory / swap settings correctly.  If you’re using a Raspberry Pi, it may take up to 45 minutes, and for the first 10-15 minutes it may appear like nothing is happening, but eventually you will start to see a progress bar in the console. 
   - After flashing is complete and the Edison begins rebooting, watch the console: you may get asked to type `control-D` to continue after one or more reboots. If so, press `Ctrl-d` to allow it to continue. 
   - After several more reboots (just about when you'll start to get concerned that it is stuck in a loop), you should get a login prompt.  If so, congratulations! Your Edison is flashed. The default password is `edison`.
 
 If you have any difficulty with flashing, skip down to [Troubleshooting](#troubleshooting)
 
+Hooray! After you've flashed your Edison, head back to the main [install instructions for wifi and dependencies](http://openaps.readthedocs.io/en/latest/docs/Build%20Your%20Rig/OpenAPS-install.html#steps-2-3-wifi-and-dependencies) to use the easy automated scripts. (Below are manual install instructions). 
 
 ## Initial Edison Setup
 
@@ -126,7 +133,7 @@ Run these commands to set secure passwords.  It will ask you to enter your new p
 
     passwd root
     passwd edison
-  
+
 ## Set up Wifi:
 
 `vi /etc/network/interfaces`
@@ -273,24 +280,51 @@ Rebooting
 U-boot & Kernel System Flash Success...
 ```
 in something closer to 10 seconds than 10 minutes, then you likely didn't set up swap properly.  To verify, `cat flash.log` and look for `dfu-util: Cannot allocate memory of size 1610612736 bytes` near the end.
+Alternatively, [this newer version of DFU Util](https://sourceforge.net/projects/dfu-util/files/latest/download) (DFU Util v0.9) seems to work better on computers with lots of RAM.
 
-c) If you have a failed flash or have problems with the reboot, try starting the console and hitting enter a bunch of times while connecting to stop autoboot.  You'll then be at a `boot>` prompt.  Run `sudo ./flashall.sh` and when it asks you to reboot type and enter `run do_flash` at the `boot>` prompt.
+c) If you recieve an `Error: Running Homebrew as root is extremely dangerous and no longer supported. As Homebrew does not drop privileges on installation you would be giving all build scripts full access to your system.` it means that you have a recent copy of homebrew (that's good) which doesn't allow sudo to even do a `brew list`. 
 
-d) If you get stuck on an error that says "Ready to receive application" on the Edison the problem is you don't have enough power to properly boot up the Edison. This can happen if you are powering from your Pi. You should either connect a battery to the Edison board to give it a little boost, or use a powered USB hub between the Pi and the Edison.
+   * The _easiest_ - but perhaps not so forward compatible - thing is to figure out what the brew command was trying to do and edit the `flashall.sh` script accordingly.
+   ** The v0.2.0 version of `flashapp.sh` has `$(brew list gnu-getopt | grep bin/getopt)`.
+   ** Running `brew list gnu-getopt | grep bin/getopt` for me (Dec 2017) gave me `/usr/local/Cellar/gnu-getopt/1.1.6/bin/getopt`
+   * Edit the `flashall.sh` from 
+   ```:bash
+        GETOPTS="$(which getopt)"
+        if [[ "$OSTYPE" == "darwin"* ]] ; then READLINK=greadlink; GETOPTS="$(brew l    ist gnu-getopt | grep bin/getopt)"; else READLINK=readlink;fi;
+   ```
+   to
+        
+   ```:bash
+        GETOPTS="$(which getopt)"
+        if [[ "$OSTYPE" == "darwin"* ]]
+        then
+                READLINK=greadlink
+                GETOPTS=/usr/local/Cellar/gnu-getopt/1.1.6/bin/getopt
+        else
+                READLINK=readline
+        fi
+   ```
 
-e) If Edison reboots correctly but never gets picked up by the flashall.sh script and the flashing process does not start, check the Edison device ID. It will probably come out automatically after the flashall.sh script fails with a list of available devices connected to the machine. On Linux, you can run lsusb to get a list of usb devices with their device ID. If the device ID is different from the one expected on flashall.sh, you can edit the script and change lines containing: USB_VID=8087 & USB_PID=0a99 to whatever the Edison has for an ID. Some users have encountered their devices ID to be 8087:0a9e
+d) If you have a failed flash or have problems with the reboot, try starting the console and hitting enter a bunch of times while connecting to stop autoboot.  You'll then be at a `boot>` prompt.  Run `sudo ./flashall.sh` and when it asks you to reboot type and enter `run do_flash` at the `boot>` prompt.
 
-f) If you have attempted the firmware flash with Jubilinux several times and the flash will not complete successfully, it is highly recommended that you follow the mmeowlink [deprecated Ubilinux instructions](https://github.com/oskarpearson/mmeowlink/wiki/Prepare-the-Edison-for-OpenAPS#ubilinux-deprecated). Note that those instructions will have notes throughout for steps which are specific to the flash of Ubilinux. Additional steps help to align the Edison's operating system with Jubilinux. You must do these steps.
+e) If you get stuck on an error that says "Ready to receive application" on the Edison the problem is you don't have enough power to properly boot up the Edison. This can happen if you are powering from your Pi. You should either connect a battery to the Edison board to give it a little boost, or use a powered USB hub between the Pi and the Edison.
+
+f) If Edison reboots correctly but never gets picked up by the flashall.sh script and the flashing process does not start, check that you have DATA micro USB to USB cables - both of them. A large proportion of USB cables are not "data" - just power - and even cables previously used for data can degrade to no longer reliably carry data. How do you know if each cable is for data? One good way is to unplug both cables from the Edison, plug each cable in turn into your computer USB port and the explorer board OTG port. If your folder/window explorer shows Edison as a drive then the cable supports data. You need both to be data cables.
+
+g) If Edison reboots correctly but never gets picked up by the flashall.sh script and the flashing process does not start, and you've re-confirmed that the two cables you are using are indeed good data cables, check the Edison device ID. It will probably come out automatically after the flashall.sh script fails with a list of available devices connected to the machine. On Linux, you can run lsusb to get a list of usb devices with their device ID. If the device ID is different from the one expected on flashall.sh, you can edit the script and change lines containing: USB_VID=8087 & USB_PID=0a99 to whatever the Edison has for an ID. Some users have encountered their devices ID to be 8087:0a9e
+
+h) If you have attempted the firmware flash with Jubilinux several times and the flash will not complete successfully, it is highly recommended that you follow the mmeowlink [deprecated Ubilinux instructions](https://github.com/oskarpearson/mmeowlink/wiki/Prepare-the-Edison-for-OpenAPS#ubilinux-deprecated). Note that those instructions will have notes throughout for steps which are specific to the flash of Ubilinux. Additional steps help to align the Edison's operating system with Jubilinux. You must do these steps.
 
 If you're having issues with a *Windows* flash of Jubilinux, try following along with the videos below. OpenAPS users have cited their instructions in successful flashes of Ubilinux. You will still need to go through the extra Ubilinux configuration steps mentioned in the linked mmeowlink wiki above.
 
 1. [Flash Ubilinux Onto Intel Edison via Windows, 5 Part Video](https://www.youtube.com/watch?v=L57RC8POJzM) (Cygwin)
 2. [uCast #21: Installing Ubilinux on the Edison (Windows)](https://www.youtube.com/watch?v=BSnXjuttSgY&t=16s) (Windows Command Prompt)
 
-g) If none of the above has worked with the Explorer board, try swapping the two microUSB cables, or replacing them with new ones.
+i) If none of the above has worked with the Explorer board, try swapping the two microUSB cables, or replacing them with new ones. See "f)" above too.
 
-h) If you've attempted all of the troubleshooting steps above but still aren't successful, it's worth trying to use a different computer to flash.
-
+j) If you've attempted all of the troubleshooting steps above but still aren't successful, it's worth trying to use a different computer to flash.
+     
+     
 ### Troubleshooting rescue mode
 
 * If your edison boots to a console and says it is in rescue mode (you can hit ctrl-d to continue or enter the root password), you may need to change a u-boot environment variable to make it boot normally.   During the boot process you will see:
